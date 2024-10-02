@@ -1,0 +1,14 @@
+{
+  "manifest_version": 1,
+  "name": "Čekiraj",
+  "version": "1.0.0",
+  "permissions": [
+    "tabs",
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
