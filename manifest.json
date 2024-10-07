@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "permissions": [
     "tabs",
+    "scripting"
   ],
   "background": {
     "service_worker": "background.js"
@@ -11,4 +12,15 @@
   "action": {
     "default_popup": "popup.html"
   }
+    "host_permissions": [
+    "<all_urls>"  // This allows the extension to access any URL, you can restrict it if needed
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],  // Adjust this to the specific domains you want
+      "js": ["contentScript.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
 }
