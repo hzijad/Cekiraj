@@ -1,6 +1,6 @@
 // contentScript.js
 
-// Create a custom modal or banner
+// Rnadom copy code for design
 const customUI = document.createElement('div');
 customUI.style.position = 'fixed';
 customUI.style.top = '0';
@@ -13,7 +13,7 @@ customUI.style.alignItems = 'center';
 customUI.style.justifyContent = 'center';
 customUI.style.zIndex = '10000';  // Ensure it's on top of other elements
 
-// Custom popup content (you can customize this HTML and CSS however you want)
+// Custom popup content
 customUI.innerHTML = `
   <div style="background-color: white; padding: 20px; border-radius: 10px; text-align: center; width: 300px;">
     <h2>Special Notice</h2>
