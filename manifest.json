@@ -13,11 +13,11 @@
     "default_popup": "popup.html"
   }
     "host_permissions": [
-    "<all_urls>"  // This allows the extension to access any URL, you can restrict it if needed
+    "<all_urls>"  // Allows the extension to access any URL, can be restrictable
   ],
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],  // Adjust this to the specific domains you want
+      "matches": ["<all_urls>"],  // Add for our domains
       "js": ["contentScript.js"],
       "run_at": "document_end"
     }
