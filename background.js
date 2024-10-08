@@ -1,4 +1,4 @@
-importScripts('list.js'); // Load your list of target domains
+importScripts('list.js'); // Load the list of target domains
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete' && tab.url) {
@@ -12,7 +12,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       // Inject the content script into the tab
       chrome.scripting.executeScript({
         target: { tabId: tabId },
-        files: ['contentScript.js'] // This file will inject your custom UI
+        files: ['contentScript.js'] // This file will inject custom UI
       });
     }
   }
