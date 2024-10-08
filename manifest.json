@@ -9,9 +9,6 @@
   "background": {
     "service_worker": "background.js"
   },
-  "action": {
-    "default_popup": "popup.html"
-  }
     "host_permissions": [
     "<all_urls>"  // Allows the extension to access any URL, can be restrictable
   ],
@@ -23,4 +20,4 @@
     }
   ]
 }
-}
+
