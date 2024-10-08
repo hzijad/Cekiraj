@@ -10,11 +10,11 @@
     "service_worker": "background.js"
   },
     "host_permissions": [
-    "<all_urls>"  // Allows the extension to access any URL, can be restrictable
+    "<all_urls>" 
   ],
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],  // Add for our domains
+      "matches": ["<all_urls>"], 
       "js": ["contentScript.js"],
       "run_at": "document_end"
     }
