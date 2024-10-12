@@ -1,23 +1,23 @@
-//before contacting raskrinkavanje or others IFCN sites using this manual list
+// List of target domains with their article counts
 const targetDomains = [
-    "www.slobodna-bosna.ba",
-    "www.informer.rs",
-    "www.kurir.rs",
-    "avaz.ba",
-    "nultatacka.rs",
-    "www.nezavisne.com",
-    "rs-lat.sputniknews.com",
-    "www.srbijadanas.com",
-    "www.radiosarajevo.ba",
-    "www.oslobodjenje.ba",
-    "www.klix.ba",
-    "www.blic.rs",
-    "www.dnevnik.ba",
-    "www.happytv.rs",
-    "www.index.hr",
-    "www.face.ba"
-  ];
-  
+  "slobodna-bosna.ba",
+  "informer.rs",
+  "kurir.rs",
+  "avaz.ba",
+  "nultatacka.rs",
+  "nezavisne.com",
+  "rs-lat.sputniknews.com",
+  "srbijadanas.com",
+  "radiosarajevo.ba",
+  "oslobodjenje.ba",
+  "klix.ba",
+  "blic.rs",
+  "dnevnik.ba",
+  "happytv.rs",
+  "index.hr",
+  "face.ba"
+];
+
   const siteData = {
     "www.slobodna-bosna.ba": { articles: 222 },
     "www.informer.rs": { articles: 262 },
@@ -36,4 +36,3 @@ const targetDomains = [
     "www.index.hr": { articles: 65 },
     "www.face.ba": { articles: 83 }
   };
-  
