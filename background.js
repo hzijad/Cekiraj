@@ -36,123 +36,153 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 function determineTrustLevel(articles) {
   if (articles >= 200) {
-    return "Highly Trusted";
+    return "Povjerena";
   } else if (articles >= 100) {
-    return "Moderately Trusted";
+    return "Povjerenija od ostalih";
   } else {
-    return "Less Trusted";
+    return "Manje povjerena";
   }
 }
 function displayTrustLevelPopup(trustLevel) {
-  // Create a shadow host to hold the shadow DOM
   const shadowHost = document.createElement('div');
-
-  // Attach shadow DOM to the shadow host (open mode)
   const shadowRoot = shadowHost.attachShadow({ mode: 'open' });
-
-  // Add the shadow host to the document body
   document.body.appendChild(shadowHost);
 
-  // Define the popup's HTML and CSS inside the shadow DOM
   shadowRoot.innerHTML = `
     <style>
-      :root {
-        --default-padding: 10px;
+      body, html {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box; /* Ensure consistent box sizing */
       }
-      .overlay {
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(30px);
-        z-index: 9999;
-      }
-      .window {
-        display: flex;
-        flex-direction: column;
-        min-width: 400px;
-        min-height: 300px;
-        border: 5px solid #5e2ae9;
-        box-shadow: 15px 15px 0 #5e2ae9;
-        max-width: 600px;
-        max-height: 500px;
-        background-color: #7f00ff;
-        filter: saturate(0.1);
-        border-radius: 3px;
-        z-index: 10000;
+
+      .modal-overlay {
         position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9999;
+        opacity: 0;
+        visibility: hidden;
+        background: rgba(0, 0, 0, 0.5);
+        transition: opacity 0.3s ease, visibility 0.3s ease;
       }
-      .window:focus-within {
-        filter: saturate(1);
+
+      .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
       }
-      .window__title-bar {
-        background-color: #8c5afb;
-        color: white;
-        padding: 13px var(--default-padding);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        cursor: default;
-        user-select: none;
-        z-index: 1;
-        box-shadow: 0px 5px 6px -2px #bb99ff5e;
-      }
-      .window__body {
-        flex-grow: 1;
+
+      .modal {
         background-color: white;
-        padding: var(--default-padding);
-        overflow-y: auto;
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        max-width: 300px; /* Limit the maximum width */
+        width: 100%; /* Ensure it takes full width up to the max */
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        text-align: center;
+        overflow: hidden; /* Prevent content overflow */
       }
-      .window__btn {
+
+      .close-modal {
+        position: absolute;
+        top: 10px;
+        right: 10px;
         cursor: pointer;
-        background-color: #5e2ae9;
+      }
+
+      .close-modal svg {
         width: 20px;
         height: 20px;
-        border: none;
-        padding: 0;
-        margin: 0;
-        border-radius: 5px;
-        opacity: 0.8;
-        font-size: 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #ae63e4;
       }
-      .window__btn:hover {
-        opacity: 1;
+
+      .close-modal svg path {
+        fill: #624E88; /* Ensure the SVG uses the desired color */
+        stroke: #624E88; /* Thicken the X button */
+        stroke-width: 1.5; /* Increase stroke width */
       }
-      .window__status-bar {
-        padding: 3px var(--default-padding);
-        font-size: 0.75rem;
-        color: #ecd4ff;
+
+      .modal-content {
+        font-size: 16px; /* Set a consistent font size */
+        color: #333;
+        margin: 20px 0; /* Space around the content */
+        text-align: left; /* Align text to the left */
+      }
+
+      .warning-text {
+        font-size: 18px; /* Larger text for warning */
+        color: #333; /* Dark color instead of red */
+        font-weight: bold; /* Make the text bold */
+        margin: 10px 0; /* Space around the warning text */
+      }
+
+      .trust-level {
+        font-size: 14px; /* Smaller font size for trust level */
+        color: #624E88; /* Color matching the close button */
+        font-weight: bold; /* Make the text bold */
+        position: absolute; /* Position it at the bottom left */
+        bottom: 10px; /* Space from the bottom */
+        left: 10px; /* Space from the left */
+        transform: translateY(5px); /* Slightly pop out */
+      }
+
+      @media only screen and (max-width: 600px) {
+        .modal {
+          width: 90%; /* Full width on small screens */
+          max-width: 90%; /* Limit max width on small screens */
+        }
+
+        .modal-content {
+          font-size: 14px; /* Smaller font on mobile */
+        }
       }
     </style>
 
-    <div class="overlay"></div>
-    <div class="window" tabindex="0">
-      <div class="window__title-bar">
-        <div class="window__title">Trust Level</div>
-        <button class="window__btn">&times;</button>
-      </div>
-      <div class="window__body">
-        <h1>Site Trust Level</h1>
-        <p>This site is considered: <strong>${trustLevel}</strong></p>
-      </div>
-      <div class="window__status-bar">
-        Status: Trust level assessment
+    <div class="modal-overlay">
+      <div class="modal">
+        <a class="close-modal" aria-label="Close modal">
+          <svg viewBox="0 0 20 20">
+            <path d="M15.898,4.045c-0.271-0.272-0.713-0.272-0.986,0l-4.71,4.711L5.493,4.045c-0.272-0.272-0.714-0.272-0.986,0s-0.272,0.714,0,0.986l4.709,4.711l-4.71,4.711c-0.272,0.271-0.272,0.713,0,0.986c0.136,0.136,0.314,0.203,0.492,0.203c0.179,0,0.357-0.067,0.493-0.203l4.711-4.711l4.71,4.711c0.137,0.136,0.314,0.203,0.494,0.203c0.178,0,0.355-0.067,0.492-0.203c0.273-0.273,0.273-0.715,0-0.986l-4.711-4.711l4.711-4.711C16.172,4.759,16.172,4.317,15.898,4.045z"></path>
+          </svg>
+        </a>
+        <div class="modal-content">
+          <div class="warning-text">
+            Ova stranica je zabilježena da objavljuje neistinite sadržaje, upozorenje preporučeno prilikom čitanja.
+          </div>
+          <div class="trust-level">Ocjena: ${trustLevel}</div>
+        </div>
       </div>
     </div>
   `;
 
-  // Add the close button functionality
-  shadowRoot.querySelector('.window__btn').addEventListener('click', () => {
-    shadowHost.remove();
+  // JavaScript for modal functionality (open and close modal)
+  const modalOverlay = shadowRoot.querySelector('.modal-overlay');
+  const closeModalElements = shadowRoot.querySelectorAll('.close-modal');
+
+  // Show modal automatically
+  if (modalOverlay) {
+    modalOverlay.classList.add('active');
+  } else {
+    console.error("Modal overlay not found");
+  }
+
+  // Close modal when clicking on the close button
+  closeModalElements.forEach(closeModal => {
+    closeModal.addEventListener('click', () => {
+      modalOverlay.classList.remove('active');
+      shadowHost.remove(); // Remove modal after hiding
+    });
+  });
+
+  // Close modal when clicking outside of the modal
+  modalOverlay.addEventListener('click', (event) => {
+    if (event.target === modalOverlay) {
+      modalOverlay.classList.remove('active');
+      shadowHost.remove(); // Remove modal after hiding
+    }
   });
 }
