@@ -1,5 +1,7 @@
 importScripts('list.js'); // Load the list of target domains
 
+let lastDomain = '';
+
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete' && tab.url) {
     const currentUrl = new URL(tab.url);
@@ -12,9 +14,10 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
     // Check if the domain is in the targetDomains array
     if (targetDomains.includes(domain.replace('www.', ''))) {
-      const siteInfo = siteData[domain];
-      if (siteInfo) {
-        const trustLevel = determineTrustLevel(siteInfo.articles);  // Determine trust level
+      if (domain !== lastDomain) {  // Check if it's a different domain
+        const siteInfo = siteData[domain];
+        if (siteInfo) {
+          const trustLevel = determineTrustLevel(siteInfo.articles);  // Determine trust level
 
         // Inject a script to display the trust level
         chrome.scripting.executeScript({
@@ -22,6 +25,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
           function: displayTrustLevelPopup,  // Pass the function instead of a file
           args: [trustLevel]  // Pass the trust level as an argument
         });
+        lastDomain = domain;
       } else {
         console.log(`No site data found for domain: ${domain}`);
       }
@@ -31,7 +35,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   } else {
     console.log(`Tab is not fully loaded or URL is missing: ${tab.url}`);
   }
-});
+}});
 
 
 function determineTrustLevel(articles) {
