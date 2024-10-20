@@ -68,8 +68,8 @@ function displayTrustLevelPopup(trustLevel) {
     trustColor = 'red';
   }
 
-  // Log the URLs to the console for debugging
-  console.log('Checkmark Icon URL:', checkmarkIcon);
+  const logoUrl = chrome.runtime.getURL('images/logo.png'); // Path to the logo image
+  const warningSignUrl = chrome.runtime.getURL('images/warning-sign.png'); // Path to the warning sign image
 
   shadowRoot.innerHTML = `
     <style>
@@ -128,11 +128,17 @@ function displayTrustLevelPopup(trustLevel) {
         font-size: 16px;
         color: #333;
         margin: 20px 0;
-        text-align: left;
+        text-align: center; /* Center the text */
+      }
+
+      .warning-icon {
+        width: 20px;
+        height: 20px;
+        margin-bottom: 5px; /* Add some space below the icon */
       }
 
       .warning-text {
-        font-size: 18px;
+        font-size: 14px; /* Make the text a bit smaller */
         color: #333;
         font-weight: bold;
         margin: 10px 0;
@@ -142,17 +148,30 @@ function displayTrustLevelPopup(trustLevel) {
         font-size: 14px;
         color: ${trustColor};
         font-weight: bold;
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
         display: flex;
         align-items: center;
+        justify-content: center;
+        margin-top: 20px; /* Add space between warning text and trust level */
       }
 
       .trust-level img {
         width: 20px;
         height: 20px;
         margin-right: 5px;
+      }
+
+      .logo {
+        width: 100px;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+      }
+
+      .separator {
+        width: 100%;
+        height: 1px;
+        background-color: #ccc;
+        margin: 20px 0;
       }
 
       @media only screen and (max-width: 600px) {
@@ -174,7 +193,10 @@ function displayTrustLevelPopup(trustLevel) {
             <path d="M15.898,4.045c-0.271-0.272-0.713-0.272-0.986,0l-4.71,4.711L5.493,4.045c-0.272-0.272-0.714-0.272-0.986,0s-0.272,0.714,0,0.986l4.709,4.711l-4.71,4.711c-0.272,0.271-0.272,0.713,0,0.986c0.136,0.136,0.314,0.203,0.492,0.203c0.179,0,0.357-0.067,0.493-0.203l4.711-4.711l4.71,4.711c0.137,0.136,0.314,0.203,0.494,0.203c0.178,0,0.355-0.067,0.492-0.203c0.273-0.273,0.273-0.715,0-0.986l-4.711-4.711l4.711-4.711C16.172,4.759,16.172,4.317,15.898,4.045z"></path>
           </svg>
         </a>
+        <img src="${logoUrl}" alt="Logo" class="logo">
+        <div class="separator"></div>
         <div class="modal-content">
+          <img src="${warningSignUrl}" alt="Warning Sign" class="warning-icon">
           <div class="warning-text">
             Ova stranica je zabilježena da objavljuje neistinite sadržaje, upozorenje preporučeno prilikom čitanja.
           </div>

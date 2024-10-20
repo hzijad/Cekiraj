@@ -9,7 +9,7 @@
   "background": {
     "service_worker": "background.js"
   },
-    "host_permissions": [
+  "host_permissions": [
     "<all_urls>" 
   ],
   "web_accessible_resources": [
@@ -17,7 +17,9 @@
       "resources": [
         "images/green-checkmark.png",
         "images/yellow-checkmark.png",
-        "images/red-checkmark.png"
+        "images/red-checkmark.png",
+        "images/logo.png",
+        "images/warning-sign.png" 
       ],
       "matches": ["<all_urls>"]
     }
@@ -26,4 +28,3 @@
 
   ]
 }
-
