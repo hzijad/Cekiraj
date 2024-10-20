@@ -19,24 +19,24 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         if (siteInfo) {
           const trustLevel = determineTrustLevel(siteInfo.articles);  // Determine trust level
 
-        // Inject a script to display the trust level
-        chrome.scripting.executeScript({
-          target: { tabId: tabId },
-          function: displayTrustLevelPopup,  // Pass the function instead of a file
-          args: [trustLevel]  // Pass the trust level as an argument
-        });
-        lastDomain = domain;
+          // Inject a script to display the trust level
+          chrome.scripting.executeScript({
+            target: { tabId: tabId },
+            function: displayTrustLevelPopup,  // Pass the function instead of a file
+            args: [trustLevel]  // Pass the trust level as an argument
+          });
+          lastDomain = domain;
+        } else {
+          console.log(`No site data found for domain: ${domain}`);
+        }
       } else {
-        console.log(`No site data found for domain: ${domain}`);
+        console.log(`Not a target domain: ${domain}`);
       }
     } else {
-      console.log(`Not a target domain: ${domain}`);
+      console.log(`Tab is not fully loaded or URL is missing: ${tab.url}`);
     }
-  } else {
-    console.log(`Tab is not fully loaded or URL is missing: ${tab.url}`);
   }
-}});
-
+});
 
 function determineTrustLevel(articles) {
   if (articles >= 200) {
@@ -47,17 +47,36 @@ function determineTrustLevel(articles) {
     return "Manje povjerena";
   }
 }
+
 function displayTrustLevelPopup(trustLevel) {
   const shadowHost = document.createElement('div');
   const shadowRoot = shadowHost.attachShadow({ mode: 'open' });
   document.body.appendChild(shadowHost);
+
+  // Determine checkmark icon and text color based on trust level
+  let checkmarkIcon = '';
+  let trustColor = '';
+
+  if (trustLevel === "Povjerena") {
+    checkmarkIcon = chrome.runtime.getURL('images/green-checkmark.png'); // Correct path to the image inside the 'images' folder
+    trustColor = 'green';
+  } else if (trustLevel === "Povjerenija od ostalih") {
+    checkmarkIcon = chrome.runtime.getURL('images/yellow-checkmark.png'); // Correct path to the yellow checkmark
+    trustColor = 'yellow';
+  } else {
+    checkmarkIcon = chrome.runtime.getURL('images/red-checkmark.png'); // Correct path to the red checkmark
+    trustColor = 'red';
+  }
+
+  // Log the URLs to the console for debugging
+  console.log('Checkmark Icon URL:', checkmarkIcon);
 
   shadowRoot.innerHTML = `
     <style>
       body, html {
         margin: 0;
         padding: 0;
-        box-sizing: border-box; /* Ensure consistent box sizing */
+        box-sizing: border-box;
       }
 
       .modal-overlay {
@@ -83,13 +102,14 @@ function displayTrustLevelPopup(trustLevel) {
         border-radius: 8px;
         padding: 1rem;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        max-width: 300px; /* Limit the maximum width */
-        width: 100%; /* Ensure it takes full width up to the max */
+        max-width: 300px;
+        width: 100%;
         position: absolute;
-        top: 20px;
-        right: 20px;
+        top: 20px !important;
+        right: 20px !important;
+        z-index: 10000 !important;
         text-align: center;
-        overflow: hidden; /* Prevent content overflow */
+        overflow: hidden;
       }
 
       .close-modal {
@@ -104,44 +124,45 @@ function displayTrustLevelPopup(trustLevel) {
         height: 20px;
       }
 
-      .close-modal svg path {
-        fill: #624E88; /* Ensure the SVG uses the desired color */
-        stroke: #624E88; /* Thicken the X button */
-        stroke-width: 1.5; /* Increase stroke width */
-      }
-
       .modal-content {
-        font-size: 16px; /* Set a consistent font size */
+        font-size: 16px;
         color: #333;
-        margin: 20px 0; /* Space around the content */
-        text-align: left; /* Align text to the left */
+        margin: 20px 0;
+        text-align: left;
       }
 
       .warning-text {
-        font-size: 18px; /* Larger text for warning */
-        color: #333; /* Dark color instead of red */
-        font-weight: bold; /* Make the text bold */
-        margin: 10px 0; /* Space around the warning text */
+        font-size: 18px;
+        color: #333;
+        font-weight: bold;
+        margin: 10px 0;
       }
 
       .trust-level {
-        font-size: 14px; /* Smaller font size for trust level */
-        color: #624E88; /* Color matching the close button */
-        font-weight: bold; /* Make the text bold */
-        position: absolute; /* Position it at the bottom left */
-        bottom: 10px; /* Space from the bottom */
-        left: 10px; /* Space from the left */
-        transform: translateY(5px); /* Slightly pop out */
+        font-size: 14px;
+        color: ${trustColor};
+        font-weight: bold;
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        display: flex;
+        align-items: center;
+      }
+
+      .trust-level img {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
       }
 
       @media only screen and (max-width: 600px) {
         .modal {
-          width: 90%; /* Full width on small screens */
-          max-width: 90%; /* Limit max width on small screens */
+          width: 90%;
+          max-width: 90%;
         }
 
         .modal-content {
-          font-size: 14px; /* Smaller font on mobile */
+          font-size: 14px;
         }
       }
     </style>
@@ -157,36 +178,34 @@ function displayTrustLevelPopup(trustLevel) {
           <div class="warning-text">
             Ova stranica je zabilježena da objavljuje neistinite sadržaje, upozorenje preporučeno prilikom čitanja.
           </div>
-          <div class="trust-level">Ocjena: ${trustLevel}</div>
+          <div class="trust-level">
+            <img src="${checkmarkIcon}" alt="Trust Level Icon">
+            ${trustLevel}
+          </div>
         </div>
       </div>
     </div>
   `;
 
-  // JavaScript for modal functionality (open and close modal)
+  // Modal functionality
   const modalOverlay = shadowRoot.querySelector('.modal-overlay');
   const closeModalElements = shadowRoot.querySelectorAll('.close-modal');
 
-  // Show modal automatically
   if (modalOverlay) {
     modalOverlay.classList.add('active');
-  } else {
-    console.error("Modal overlay not found");
   }
 
-  // Close modal when clicking on the close button
   closeModalElements.forEach(closeModal => {
     closeModal.addEventListener('click', () => {
       modalOverlay.classList.remove('active');
-      shadowHost.remove(); // Remove modal after hiding
+      shadowHost.remove();
     });
   });
 
-  // Close modal when clicking outside of the modal
   modalOverlay.addEventListener('click', (event) => {
     if (event.target === modalOverlay) {
       modalOverlay.classList.remove('active');
-      shadowHost.remove(); // Remove modal after hiding
+      shadowHost.remove();
     }
   });
 }
