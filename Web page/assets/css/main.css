@@ -1828,6 +1828,7 @@ background-image: url("images/overlay.png"), linear-gradient(5deg, #FC4442, #000
 	.box {
 		border-color: rgba(255, 255, 255, 0.35);
 	}
+	
 
 /* Button */
 
@@ -1899,29 +1900,49 @@ background-image: url("images/overlay.png"), linear-gradient(5deg, #FC4442, #000
 		}
 
 		input[type="submit"].disabled, input[type="submit"]:disabled,
-		input[type="reset"].disabled,
-		input[type="reset"]:disabled,
-		input[type="button"].disabled,
-		input[type="button"]:disabled,
-		button.disabled,
-		button:disabled,
-		.button.disabled,
-		.button:disabled {
-			pointer-events: none;
-			opacity: 0.25;
-		}
+input[type="reset"].disabled,
+input[type="reset"]:disabled,
+input[type="button"].disabled,
+input[type="button"]:disabled,
+button.disabled,
+button:disabled,
+.button.disabled,
+.button:disabled {
+    pointer-events: none;
+    opacity: 0.25;
+}
 
-		@media screen and (max-width: 736px) {
+.button-align-left {
+    display: inline-flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    margin-left: 0; /* Reset any default margin */
+    padding: 0.5em 1em; /* Adjust padding for better appearance */
+    text-align: center; /* Center text inside the button */
+}
 
-			input[type="submit"],
-			input[type="reset"],
-			input[type="button"],
-			button,
-			.button {
-				min-width: 0;
-			}
+#intro .spotlight .content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the start (left) */
+}
 
-		}
+#intro .spotlight .content .actions {
+    width: auto; /* Ensure the actions container takes appropriate width */
+    margin-top: 0; /* Remove any added space */
+}
+
+@media screen and (max-width: 736px) {
+
+    input[type="submit"],
+    input[type="reset"],
+    input[type="button"],
+    button,
+    .button {
+        min-width: 0;
+    }
+
+}
 
 	input[type="submit"],
 	input[type="reset"],
