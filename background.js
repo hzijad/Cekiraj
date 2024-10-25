@@ -59,25 +59,32 @@ function displayTrustLevelPopup(trustLevel) {
 
   if (trustLevel === "Povjerena") {
     checkmarkIcon = chrome.runtime.getURL('images/green-checkmark.png'); // Correct path to the image inside the 'images' folder
-    trustColor = '#4CAF50'; /* Soft green */
+    trustColor = '#276D30'; // Green color
   } else if (trustLevel === "Povjerenija od ostalih") {
     checkmarkIcon = chrome.runtime.getURL('images/yellow-checkmark.png'); // Correct path to the yellow checkmark
-    trustColor = '#FFC107'; /* Amber yellow */;
+    trustColor = '#B7AB17'; // Yellow color
   } else {
     checkmarkIcon = chrome.runtime.getURL('images/red-checkmark.png'); // Correct path to the red checkmark
-    trustColor = '#F44336'; /* Vibrant red */;
+    trustColor = '#B71335'; // Red color
   }
 
   const logoUrl = chrome.runtime.getURL('images/logo.png'); // Path to the logo image
 
   shadowRoot.innerHTML = `
   <style>
-    body, html {
+    /* CSS Reset */
+    *, *::before, *::after {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: Arial, sans-serif; /* Set a default font family */
+      font-size: 14px; /* Set a default font size */
+      font-weight: normal; /* Set a default font weight */
+      line-height: 1.5; /* Set a default line height */
+      letter-spacing: normal; /* Set a default letter spacing */
     }
 
+    /* Scoped Styles */
     .modal-overlay {
       position: fixed;
       top: 0;
