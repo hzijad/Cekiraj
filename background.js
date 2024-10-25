@@ -59,13 +59,13 @@ function displayTrustLevelPopup(trustLevel) {
 
   if (trustLevel === "Povjerena") {
     checkmarkIcon = chrome.runtime.getURL('images/green-checkmark.png'); // Correct path to the image inside the 'images' folder
-    trustColor = '#276D30'; // Green color
+    trustColor = '#4CAF50'; /* Soft green */
   } else if (trustLevel === "Povjerenija od ostalih") {
     checkmarkIcon = chrome.runtime.getURL('images/yellow-checkmark.png'); // Correct path to the yellow checkmark
-    trustColor = '#B7AB17'; // Yellow color
+    trustColor = '#FFC107'; /* Amber yellow */;
   } else {
     checkmarkIcon = chrome.runtime.getURL('images/red-checkmark.png'); // Correct path to the red checkmark
-    trustColor = '#B71335'; // Red color
+    trustColor = '#F44336'; /* Vibrant red */;
   }
 
   const logoUrl = chrome.runtime.getURL('images/logo.png'); // Path to the logo image
