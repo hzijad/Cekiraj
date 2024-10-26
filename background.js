@@ -62,7 +62,7 @@ function displayTrustLevelPopup(trustLevel) {
     trustColor = '#276D30'; // Green color
   } else if (trustLevel === "Povjerenija od ostalih") {
     checkmarkIcon = chrome.runtime.getURL('images/yellow-checkmark.png'); // Correct path to the yellow checkmark
-    trustColor = '#B7AB17'; // Yellow color
+    trustColor = '#D6BE55'; // Yellow color //#B7AB17 is old
   } else {
     checkmarkIcon = chrome.runtime.getURL('images/red-checkmark.png'); // Correct path to the red checkmark
     trustColor = '#B71335'; // Red color
@@ -205,7 +205,7 @@ function displayTrustLevelPopup(trustLevel) {
       <div class="modal-content">
         <div class="warning-title">Upozorenje</div>
         <div class="warning-text">
-          Ova stranica je zabilježena da objavljuje neistinite sadržaje, upozorenje preporučeno prilikom čitanja.
+           Ova stranica je zabilježena da objavljuje neistinite sadržaje, pažnja preporučena prilikom čitanja.
         </div>
         <div class="trust-level">
           <img src="${checkmarkIcon}" alt="Trust Level Icon">
