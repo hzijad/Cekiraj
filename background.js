@@ -62,7 +62,7 @@ function displayTrustLevelPopup(trustLevel) {
     trustColor = '#276D30'; // Green color
   } else if (trustLevel === "Povjerenija od ostalih") {
     checkmarkIcon = chrome.runtime.getURL('images/yellow-checkmark.png'); // Correct path to the yellow checkmark
-    trustColor = '#D6BE55'; // Yellow color //#B7AB17 is old
+    trustColor = '#B7AB17'; // Yellow color
   } else {
     checkmarkIcon = chrome.runtime.getURL('images/red-checkmark.png'); // Correct path to the red checkmark
     trustColor = '#B71335'; // Red color
@@ -106,7 +106,7 @@ function displayTrustLevelPopup(trustLevel) {
     .modal {
       background-color: white;
       border-radius: 8px;
-      padding: 1rem;
+      padding: 0.5rem; /* Increased padding */
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
       max-width: 300px;
       width: 100%;
@@ -120,8 +120,8 @@ function displayTrustLevelPopup(trustLevel) {
 
     .close-modal {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 5px; /* Increased top margin */
+      right: 5px; /* Increased right margin */
       cursor: pointer;
     }
 
@@ -133,7 +133,7 @@ function displayTrustLevelPopup(trustLevel) {
     .modal-content {
       font-size: 16px;
       color: #333;
-      margin: 20px 0;
+      margin: 10px 0; /* Increased margin */
       text-align: center; /* Center the text */
     }
 
@@ -141,7 +141,7 @@ function displayTrustLevelPopup(trustLevel) {
       font-size: 14px; /* Make the text a bit smaller */
       color: #333;
       font-weight: bold;
-      margin: 10px 0;
+      margin: 5px 0 15px 0; /* Reduced top margin, increased bottom margin */
     }
 
     .trust-level {
@@ -151,7 +151,7 @@ function displayTrustLevelPopup(trustLevel) {
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 20px; /* Add space between warning text and trust level */
+      margin-top: 15px; /* Increased margin */
     }
 
     .trust-level img {
@@ -171,14 +171,14 @@ function displayTrustLevelPopup(trustLevel) {
       font-size: 1.6em;
       font-weight: bold;
       text-align: center;
-      margin-bottom: 1em;
+      margin-bottom: 0.5em; /* Reduced margin */
     }
 
     .separator {
       width: 100%;
       height: 1px;
       background-color: #ccc;
-      margin: 15px 0; /* Slightly increase gap between logo and line */
+      margin: 10px 0; /* Increased margin */
     }
 
     @media only screen and (max-width: 600px) {
@@ -205,7 +205,7 @@ function displayTrustLevelPopup(trustLevel) {
       <div class="modal-content">
         <div class="warning-title">Upozorenje</div>
         <div class="warning-text">
-           Ova stranica je zabilježena da objavljuje neistinite sadržaje, pažnja preporučena prilikom čitanja.
+          Ova stranica je zabilježena da objavljuje neistinite sadržaje, pažnja preporučena prilikom čitanja.
         </div>
         <div class="trust-level">
           <img src="${checkmarkIcon}" alt="Trust Level Icon">

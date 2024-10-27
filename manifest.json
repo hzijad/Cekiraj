@@ -1,7 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Čekiraj",
-  "version": "1.0",
+  "version": "1.2",
+  "description": "Čekiraj je ekstenzija koja provjerava nivo pouzdanosti različitih web stranica sa vijestima.",
   "permissions": [
     "tabs",
     "scripting"
@@ -9,7 +10,7 @@
   "icons": {
     "16": "images/logo16.png",
     "32": "images/logo32.png",
-	"64": "images/logo64.png",
+    "64": "images/logo64.png",
     "128": "images/logo128.png"
   },
   "background": {
@@ -31,6 +32,5 @@
     }
   ],
   "content_scripts": [
-
   ]
 }
