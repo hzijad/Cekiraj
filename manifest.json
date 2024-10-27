@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Čekiraj",
-  "version": "1.2",
+  "version": "1.2.1",
   "description": "Čekiraj je ekstenzija koja provjerava nivo pouzdanosti različitih web stranica sa vijestima.",
   "permissions": [
     "tabs",
