@@ -1,2 +1,2 @@
 # Cekiraj
-Extension that gives a user notification if the website they are on is in the IFCN database for having a false information
+A browser extension designed to empower users with real-time notifications if the website they are visiting is listed in the International Fact-Checking Network (IFCN) database for spreading false information. In addition to providing immediate alerts, Čekiraj offers a trustworthiness ranking for websites, helping users assess the reliability of content based on multiple parameters. By promoting transparency and raising awareness of online misinformation, Čekiraj strives to create a more informed and discerning internet community.
