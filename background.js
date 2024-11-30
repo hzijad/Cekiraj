@@ -1,3 +1,7 @@
+/*
+      UNESCO HACKATHON 2024. - FIRST PLACE WINNER
+*/
+
 importScripts('list.js'); // Load the list of target domains
 
 let lastDomain = '';
